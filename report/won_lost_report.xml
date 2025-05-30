@@ -1,0 +1,195 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+Copyright (C) 2015 DevIntelle Consulting Service Pvt.Ltd (<http://www.devintellecs.com>).
+
+For Module Support : devintelle@gmail.com  or Skype : devintelle
+ -->
+
+<odoo>
+    <!-- Report Template -->
+    <template id="won_lost_template">
+        <t t-call="web.external_layout">
+            <div class="page" style="font-size: 16px;">
+                <h2 style="text-align: center; color:#000;margin-top:-50px;"><b>Won Lost Report</b></h2>
+                <h5 style="text-align: center; color:#000;margin-top:20px;">
+                        <b><span t-esc="docs.start_date" t-options='{"widget": "date","format": "dd-MM-yyyy"}'/></b>  To    
+                        <b><span t-esc="docs.end_date" t-options='{"widget": "date","format": "dd-MM-yyyy"}'/></b>
+                </h5>
+                <t t-set="total_won" t-value="0"/>
+                <t t-set="total_lost" t-value="0"/>
+                <t t-set="total_leads" t-value="0"/>
+                <!-- Won Leads Section -->
+                <h3 style="color: green; margin-top: 50px;">Won Leads</h3>
+                <table class="table table-bordered" style="width: 100%; border-collapse: collapse;">
+                        <thead>
+                            <tr style="background-color: #a9a9a9;">
+                                <th style="text-align:center; border: 1px solid #000;">No.</th>
+                                <th style="text-align:center; border: 1px solid #000;">Name</th>
+                                <th style="text-align:center; border: 1px solid #000;">Customer</th>
+                                <th style="text-align:center; border: 1px solid #000;">Expected Closing</th>
+                            </tr>
+                        </thead>
+                
+                        <tbody>
+                            <t t-foreach="wonlost_history" t-as="group">
+                                <tr>
+                                    <td colspan="4" style="font-size:16px; font-weight:bold; background-color: #f0f0f0;">
+                                        <b style="color:rgb(8, 7, 7);">User: </b>
+                                        <span style="color:rgb(9, 9, 9);" t-esc="group.get('user_name', 'N/A')"/>
+                                    </td>
+                                </tr>
+                                <t t-set="sr_no" t-value="0"/>
+                                <t t-foreach="group['won']" t-as="line">
+                                    <t t-set="sr_no" t-value="sr_no + 1"/>
+                                    <t t-set="total_won" t-value="total_won + 1"/>
+                                    <t t-set="total_leads" t-value="total_leads + 1"/>
+                                    <tr>
+                                        <td style="text-align:center; border: 1px solid #000;"> <t t-esc="sr_no"/> </td>
+                                        <td style="border: 1px solid #000;"> <t t-esc="line['name']"/> </td>
+                                        <td style="text-align:center; border: 1px solid #000;"> <t t-esc="line['partner_name']"/> </td>
+                                        <td style="text-align:center; border: 1px solid #000;"> <t t-esc="line.get('expected_closing', 'N/A')" t-options='{"widget": "date","format": "dd-MM-yyyy"}'/> </td>
+                                    </tr>
+                                </t>
+                                <t t-if="not group['won']">
+                                    <tr>
+                                        <td colspan="4" style="text-align: center; color: #888;">No Won Leads</td>
+                                    </tr>
+                                </t>
+                                
+                            </t>
+                        </tbody>
+                        
+                </table>
+                
+
+                <!-- Lost Leads Section -->
+                <h3 style="color: red; margin-top: 30px;">Lost Leads</h3>
+                    <table class="table table-bordered" style="width: 100%; border-collapse: collapse; margin-bottom: 30px;">
+                        <thead>
+                            <tr style="background-color: #a9a9a9;">
+                                <th style="text-align:center; border: 1px solid #000;">No.</th>
+                                <th style="text-align:center; border: 1px solid #000;">Name</th>
+                                <th style="text-align:center; border: 1px solid #000;">Customer</th>
+                                <th style="text-align:center; border: 1px solid #000;">Expected Closing</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <t t-foreach="wonlost_history" t-as="group">
+                                <tr>
+                                    <td colspan="4" style="font-size:16px; font-weight:bold; background-color: #f0f0f0;">
+                                        <b style="color:rgb(8, 7, 7);">User: </b>
+                                        <span style="color:rgb(9, 9, 9);" t-esc="group.get('user_name', 'N/A')"/>
+                                    </td>
+                                </tr>
+                                <t t-set="sr_no" t-value="0"/>
+                                <t t-foreach="group['lost']" t-as="line">
+                                    <t t-set="sr_no" t-value="sr_no + 1"/>
+                                    <t t-set="total_lost" t-value="total_lost + 1"/>
+                                    <t t-set="total_leads" t-value="total_leads + 1"/>
+                                    <tr>
+                                        <td style="text-align:center; border: 1px solid #000;"> <t t-esc="sr_no"/> </td>
+                                        <td style="border: 1px solid #000;"> <t t-esc="line['name']"/> </td>
+                                        <td style="text-align:center; border: 1px solid #000;"> <t t-esc="line['partner_name']"/> </td>
+                                        <td style="text-align:center; border: 1px solid #000;"> <t t-esc="line.get('expected_closing', 'N/A')" t-options='{"widget": "date","format": "dd-MM-yyyy"}'/> </td>
+                                    </tr>
+                                </t>
+                                <t t-if="not group['lost']">
+                                    <tr>
+                                        <td colspan="4" style="text-align: center; color: #888;">No Lost Leads</td>
+                                    </tr>
+                                </t>
+                                
+                            </t>
+                        </tbody>
+                        
+                    </table>
+
+
+                    
+                <!-- only box type design -->
+
+                <!-- <div style="margin-top: 70px;">
+                        <h2 style="text-align: center; color: #000;"><b>Won Lost Leads Comparison</b></h2>
+                        <div style="display: flex; justify-content: center; align-items: left; margin-top: 50px;">
+                            <div style="width: 30%; background-color: grey; color: white; padding: 10px; margin-right: 10px; text-align: center;"><b>
+                                    Total Leads: <t t-esc="total_leads"/></b>
+                                </div>
+                        </div>
+                        <div style="display: flex; justify-content: center; align-items: left; margin-top: 20px;">
+                            
+                            <div style="width: 30%; background-color: green; color: white; padding: 10px; margin-right: 10px; text-align: center;"><b>
+                                Total Won: <t t-esc="total_won"/> (<t t-esc="(total_won * 100) / total_leads"/>%)</b>
+                            </div>
+                            <div style="width: 30%; background-color: red; color: white; padding: 10px; text-align: center;"><b>
+                                Total Lost: <t t-esc="total_lost"/> (<t t-esc="(total_lost * 100) / total_leads"/>%)</b>
+                            </div>
+                        </div>
+                </div> -->
+
+                <!-- box type with square box design -->
+
+                <!-- box type with square box design -->
+
+                <t t-if="total_leads > 0">
+                    <div style="margin-top: 70px;">
+                        <h2 style="text-align: center; color: #000; font-weight: bold; font-size: 22px; margin-bottom: 30px;">Won Lost Comparison</h2>
+                        <div style="display: flex; justify-content: center; align-items: center; margin-top: 30px;">
+                            <div style="width: 25%; background-color: #f8f9fa; color: #343a40; padding: 15px; margin-right: 20px; border: 2px solid #ddd; border-radius: 8px; text-align: center; font-size: 18px;">
+                                <b>Total Leads:</b><br/>
+                                <span style="font-size: 24px; font-weight: bold; color: #495057;">
+                                    <t t-esc="total_leads"/>
+                                </span> (100%)
+                            </div>
+                        </div>
+                        <div style="display: flex; justify-content: center; align-items: center; margin-top: 30px;">
+                            <div style="width: 25%; background-color: #28a745; color: white; padding: 20px; margin-right: 20px; border-radius: 8px; text-align: center; font-size: 18px;">
+                                <b>Total Won:</b><br/>
+                                <span style="font-size: 24px; font-weight: bold;">
+                                    <t t-esc="total_won"/>
+                                </span> 
+                                (<t t-esc="(total_won * 100) / total_leads if total_leads else 0"/>%)
+                            </div>
+                            <div style="width: 25%; background-color: #dc3545; color: white; padding: 20px; border-radius: 8px; text-align: center; font-size: 18px;">
+                                <b>Total Lost:</b><br/>
+                                <span style="font-size: 24px; font-weight: bold;">
+                                    <t t-esc="total_lost"/>
+                                </span> 
+                                (<t t-esc="(total_lost * 100) / total_leads if total_leads else 0"/>%)
+                            </div>
+                        </div>
+                    </div>
+                </t>
+                <t t-else="">
+                    <div style="margin-top: 70px; text-align: center; font-size: 18px; color: #888;">
+                        <b>No data available for the selected user</b>
+                    </div>
+                </t>
+
+            </div>
+                      
+                      
+                      
+                        <!-- <h2 style="text-align: center; color:#000;margin-top:50px;"><b>Won Lost Leads Comparision</b></h2>
+                        <h3 style="text-align: left; color:#000;margin-top:50px;"><b>Total Leads: <t t-esc="total_leads"/></b></h3>
+                        <h3 style="text-align: left; color:#000;margin-top:20px;"><b>Total Won Leads: <t t-esc="total_won"/>(<t t-esc="(total_won * 100) / total_leads"/>%)</b></h3>
+                        <h3 style="text-align: left; color:#000;margin-top:20px;"><b>Total Lost Leads: <t t-esc="total_lost"/>(<t t-esc="(total_lost * 100) / total_leads"/>%)</b></h3> -->
+
+
+
+                        
+        </t>
+
+    </template>
+
+    <!-- Wrapper Template -->
+    <template id="won_lost_template1">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="o">
+                <t t-set="docs" t-value="o"/>
+                <t t-call="dev_lead_win_loss_report.won_lost_template"/>
+            </t>
+        </t>
+    </template>
+</odoo>
+
+

@@ -1,0 +1,27 @@
+09 May 2025 : HNA
+---------------------------
+v 17.0.1.0
+
+    * module Created.
+	- add one wizard .
+	- add won lost leads report 
+
+12 May 2025 : HNA
+---------------------------
+v 17.0.1.1
+
+	- won lost comparision 
+	- design values 
+	- pdf formate update
+
+13 May 2025 : HNA
+---------------------------
+v 17.0.1.2
+
+	- pdf formate update for date fields
+	- some conditions add for users not available data 
+
+
+
+
+
